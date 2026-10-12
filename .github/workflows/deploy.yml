@@ -1,3 +1,4 @@
+
 name: Secure Helm CI/CD
 
 on:
@@ -21,3 +22,14 @@ jobs:
 
       - name: Render Kubernetes YAML
         run: helm template myapp ./myapp
+
+      - name: Verify Secret Availability
+        env:
+          DEMO_SECRET: ${{ secrets.DEMO_SECRET }}
+        shell: bash
+        run: |
+          if [ -z "$DEMO_SECRET" ]; then
+            echo "Secret is missing"
+            exit 1
+          fi
+          echo "Secret is available and its value is not displayed."
