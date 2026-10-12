@@ -1,0 +1,23 @@
+name: Secure Helm CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v4
+
+      - name: Validate Helm Chart
+        run: helm lint ./myapp
+
+      - name: Render Kubernetes YAML
+        run: helm template myapp ./myapp
